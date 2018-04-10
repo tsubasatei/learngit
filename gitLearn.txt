@@ -172,6 +172,29 @@ learn git
 	git merge --no-ff -m "merge with no-ff" dev
 	
 	
+14. Bug分支
+
+	修复bug时，我们会通过创建新的bug分支进行修复，然后合并，最后删除。
+
+	a）当手头工作没有完成时，先把工作现场 git stash 一下，即把当前工作现场“储藏”起来，等以后恢复现场后继续工作然后去修复bug；
+	
+	b）确定要在哪个分支上修复bug，假定需要在master分支上修复，就从master创建临时分支
+	修复后，切换到master分支，并完成合并，最后删除issue-101分支；
+	
+	c）再回到dev分支，
+	用 git stash list 命令查看工作现场，
+	
+	回到工作现场，有两个办法：
+	一是用 git stash apply 恢复，但是恢复后，stash内容并不删除，你需要用 git stash drop 来删除；
+	另一种方式是用 git stash pop ，恢复的同时把stash内容也删了。
+	多次stash，恢复的时候，先用 git stash list 查看，然后恢复指定的stash，用命令：$ git stash apply stash@{0}
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	
