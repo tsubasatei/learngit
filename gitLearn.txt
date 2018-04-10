@@ -219,14 +219,23 @@ learn git
 	首先，可以试图用git push origin branch-name推送自己的修改；
 	如果推送失败，则因为远程分支比你的本地更新，需要先用git pull试图合并；
 	如果合并有冲突，则解决冲突，并在本地提交；
-	没有冲突或者解决掉冲突后，再用git push origin branch-name推送就能成功！
+	没有冲突或者解决掉冲突后，再用 git push origin branch-name 推送就能成功！
 	如果git pull提示“no tracking information”，则说明本地分支和远程分支的链接关系没有创建，
 	用命令 git branch --set-upstream branch-name origin/branch-name。
 	
 	
+17. 标签管理
 	
+	发布一个版本时，我们通常先在版本库中打一个标签（tag），tag就是一个让人容易记住的有意义的名字，它跟某个commit绑在一起。
 	
+	1）命令 git tag <name> 用于新建一个标签，默认为HEAD，也可以指定一个commit id 如：git tag v0.9 6224937；
+	注意，标签不是按时间顺序列出，而是按字母排序的。可以用 git show <tagname> 查看标签信息：
 	
-	
-	
-	
+	2）创建带有说明的标签：
+	git tag -a <tagname> -m "blablabla..."可以指定标签信息；用-a指定标签名，-m指定说明文字。 
+	如： git tag -a v0.1 -m "version 0.1 released" 3628164
+
+	git tag -s <tagname> -m "blablabla..."可以用PGP签名标签；用-s私钥签名一个标签
+	如：git tag -s v0.2 -m "signed version 0.2 released" fec145a   ，签名采用PGP签名，必须首先安装gpg（GnuPG）
+
+	命令git tag可以查看所有标签。
