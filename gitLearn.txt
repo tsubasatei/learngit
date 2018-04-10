@@ -172,7 +172,7 @@ learn git
 	git merge --no-ff -m "merge with no-ff" dev
 	
 	
-	
+14 修复bug
 	
 	
 	
