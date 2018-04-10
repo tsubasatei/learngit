@@ -258,3 +258,48 @@ learn git
 	在GitHub上，可以任意Fork开源仓库；
 	自己拥有Fork后的仓库的读写权限；
 	可以推送 pull request 给官方仓库来贡献代码
+	
+	
+20. 使用码云
+
+	1）在本地库上使用命令git remote add把它和码云的远程库关联
+	git remote add origin git@gitee.com:tsubasatei/learngit.git
+	之后，就可以正常地用git push和git pull推送了
+	
+	2）如果在使用命令git remote add时报错：
+	git remote add origin git@gitee.com:liaoxuefeng/learngit.git
+	fatal: remote origin already exists.
+	
+	a）先用git remote -v查看远程库信息：
+		git remote -v
+		origin    git@github.com:michaelliao/learngit.git (fetch)
+		origin    git@github.com:michaelliao/learngit.git (push)
+	
+	b)删除已有的GitHub远程库：git remote rm origin， 然后再关联远程仓库。
+	
+	3）一个本地库能既关联GitHub，又关联码云。码云也同样提供了Pull request功能。
+	git给远程库起的默认名称是origin，如果有多个远程库，我们需要用不同的名称来标识不同的远程库。
+	
+	a)先删除已关联的名为origin的远程库：git remote rm origin
+	b)先关联GitHub的远程库：git remote add github git@github.com:tsubasatei/learngit.git
+	c)再关联码云的远程库：git remote add gitee git@gitee.com:tsubasatei/learngit.git
+	d)用git remote -v查看远程库信息，可以看到两个远程库：
+		git remote -v
+		gitee    git@gitee.com:liaoxuefeng/learngit.git (fetch)
+		gitee    git@gitee.com:liaoxuefeng/learngit.git (push)
+		github    git@github.com:michaelliao/learngit.git (fetch)
+		github    git@github.com:michaelliao/learngit.git (push)
+	e)推送到GitHub，使用命令：git push github master
+	  推送到码云，使用命令：git push gitee master
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
