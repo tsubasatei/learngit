@@ -236,6 +236,25 @@ learn git
 	如： git tag -a v0.1 -m "version 0.1 released" 3628164
 
 	git tag -s <tagname> -m "blablabla..."可以用PGP签名标签；用-s私钥签名一个标签
-	如：git tag -s v0.2 -m "signed version 0.2 released" fec145a   ，签名采用PGP签名，必须首先安装gpg（GnuPG）
+	如：git tag -s v0.2 -m "signed version 0.2 released" fec145a   
+	签名采用PGP签名，必须首先安装gpg（GnuPG），用PGP签名的标签是不可伪造的，因为可以验证PGP签名。
 
 	命令git tag可以查看所有标签。
+
+	
+18. 操作标签
+
+	命令 git push origin <tagname> 可以推送一个本地标签；
+
+	命令 git push origin --tags 可以推送全部未推送过的本地标签；
+
+	命令 git tag -d <tagname> 可以删除一个本地标签；
+
+	命令 git push origin :refs/tags/<tagname> 可以删除一个远程标签。
+	
+	
+19. 使用GitHub
+
+	在GitHub上，可以任意Fork开源仓库；
+	自己拥有Fork后的仓库的读写权限；
+	可以推送 pull request 给官方仓库来贡献代码
