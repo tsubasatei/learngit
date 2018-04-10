@@ -219,11 +219,84 @@ learn git
 	首先，可以试图用git push origin branch-name推送自己的修改；
 	如果推送失败，则因为远程分支比你的本地更新，需要先用git pull试图合并；
 	如果合并有冲突，则解决冲突，并在本地提交；
-	没有冲突或者解决掉冲突后，再用git push origin branch-name推送就能成功！
+	没有冲突或者解决掉冲突后，再用 git push origin branch-name 推送就能成功！
 	如果git pull提示“no tracking information”，则说明本地分支和远程分支的链接关系没有创建，
 	用命令 git branch --set-upstream branch-name origin/branch-name。
 	
 
+	
+17. 标签管理
+	
+	发布一个版本时，我们通常先在版本库中打一个标签（tag），tag就是一个让人容易记住的有意义的名字，它跟某个commit绑在一起。
+	
+	1）命令 git tag <name> 用于新建一个标签，默认为HEAD，也可以指定一个commit id 如：git tag v0.9 6224937；
+	注意，标签不是按时间顺序列出，而是按字母排序的。可以用 git show <tagname> 查看标签信息：
+	
+	2）创建带有说明的标签：
+	git tag -a <tagname> -m "blablabla..."可以指定标签信息；用-a指定标签名，-m指定说明文字。 
+	如： git tag -a v0.1 -m "version 0.1 released" 3628164
+
+	git tag -s <tagname> -m "blablabla..."可以用PGP签名标签；用-s私钥签名一个标签
+	如：git tag -s v0.2 -m "signed version 0.2 released" fec145a   
+	签名采用PGP签名，必须首先安装gpg（GnuPG），用PGP签名的标签是不可伪造的，因为可以验证PGP签名。
+
+	命令git tag可以查看所有标签。
+
+	
+18. 操作标签
+
+	命令 git push origin <tagname> 可以推送一个本地标签；
+
+	命令 git push origin --tags 可以推送全部未推送过的本地标签；
+
+	命令 git tag -d <tagname> 可以删除一个本地标签；
+
+	命令 git push origin :refs/tags/<tagname> 可以删除一个远程标签。
+	
+	
+19. 使用GitHub
+
+	在GitHub上，可以任意Fork开源仓库；
+	自己拥有Fork后的仓库的读写权限；
+	可以推送 pull request 给官方仓库来贡献代码
+	
+	
+20. 使用码云
+
+	1）在本地库上使用命令git remote add把它和码云的远程库关联
+	git remote add origin git@gitee.com:tsubasatei/learngit.git
+	之后，就可以正常地用git push和git pull推送了
+	
+	2）如果在使用命令git remote add时报错：
+	git remote add origin git@gitee.com:liaoxuefeng/learngit.git
+	fatal: remote origin already exists.
+	
+	a）先用git remote -v查看远程库信息：
+		git remote -v
+		origin    git@github.com:michaelliao/learngit.git (fetch)
+		origin    git@github.com:michaelliao/learngit.git (push)
+	
+	b)删除已有的GitHub远程库：git remote rm origin， 然后再关联远程仓库。
+	
+	3）一个本地库能既关联GitHub，又关联码云。码云也同样提供了Pull request功能。
+	git给远程库起的默认名称是origin，如果有多个远程库，我们需要用不同的名称来标识不同的远程库。
+	
+	a)先删除已关联的名为origin的远程库：git remote rm origin
+	b)先关联GitHub的远程库：git remote add github git@github.com:tsubasatei/learngit.git
+	c)再关联码云的远程库：git remote add gitee git@gitee.com:tsubasatei/learngit.git
+	d)用git remote -v查看远程库信息，可以看到两个远程库：
+		git remote -v
+		gitee    git@gitee.com:liaoxuefeng/learngit.git (fetch)
+		gitee    git@gitee.com:liaoxuefeng/learngit.git (push)
+		github    git@github.com:michaelliao/learngit.git (fetch)
+		github    git@github.com:michaelliao/learngit.git (push)
+	e)推送到GitHub，使用命令：git push github master
+	  推送到码云，使用命令：git push gitee master
+	
+	
+	
+	
+	
 	
 	
 	
