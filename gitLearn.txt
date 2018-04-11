@@ -359,7 +359,8 @@ learn git
 	Git Cheat Sheet
 	Git的官方网站：http://git-scm.com
 
-
+	git pull 失败 ,提示：fatal: refusing to merge unrelated histories：
+	在进行git pull 时，添加一个可选项：git pull origin master --allow-unrelated-histories
 
 
 
