@@ -300,7 +300,7 @@ learn git
 	
 22.忽略特殊文件
 
-        忽略某些文件时，需要编写.gitignore。在Git工作区的根目录下创建一个特殊的.gitignore文件，然后把要忽略的文件名填进去。
+    忽略某些文件时，需要编写.gitignore。在Git工作区的根目录下创建一个特殊的.gitignore文件，然后把要忽略的文件名填进去。
 	
 	https://github.com/github/gitignore
 	忽略文件的原则是：
