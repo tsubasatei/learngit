@@ -34,6 +34,7 @@ learn git
 	
 	1）HEAD指向的版本就是当前版本，上一个版本就是HEAD^，上100个版本写成HEAD~100。
 	因此，Git允许我们在版本的历史之间穿梭，使用命令git reset --hard commit_id。commit_id版本号没必要写全，前几位就可以了。
+	分离HEAD：git checkout C1
 
 	2）穿梭前，用git log可以查看提交历史，以便确定要回退到哪个版本。嫌输出信息太多使用git log --pretty=oneline
 	如：$ git reset --hard HEAD^  回退到上一版本
@@ -253,6 +254,13 @@ learn git
 
 	命令 git push origin :refs/tags/<tagname> 可以删除一个远程标签。
 	
+	命令 git describe 用来描述离你最近的锚点（也就是标签）
+	
+	命令 git bisect <ref> 一个查找产生 Bug 的提交记录的指令
+		<ref> 可以是任何能被 Git 识别成提交记录的引用，如果你没有指定的话，Git 会以你目前所检出的位置（HEAD）。
+	它输出的结果是这样的：<tag>_<numCommits>_g<hash>
+		tag 表示的是离 ref 最近的标签， numCommits 是表示这个 ref 与 tag 相差有多少个提交记录， hash 表示的是你所给定的 ref 所表示的提交记录哈希值的前几位。
+		当 ref 提交记录上有某个标签时，则只输出标签名称
 	
 19. 使用GitHub
 
@@ -359,13 +367,15 @@ learn git
 	Git Cheat Sheet
 	Git的官方网站：http://git-scm.com
 
-	git pull 失败 ,提示：fatal: refusing to merge unrelated histories：
+26.	git pull 失败 ,提示：fatal: refusing to merge unrelated histories：
 	在进行git pull 时，添加一个可选项：git pull origin master --allow-unrelated-histories
 
+27.	可以直接使用 -f 选项让分支指向另一个提交。例如:git branch -f master HEAD~3 命令会将 master 分支强制指向 HEAD 的第 3 级父提交。
 
+28. 命令:git cherry-pick <提交号>... 将一些提交复制到当前所在的位置（HEAD）下面
 
-
-
+29. 交互式 rebase 指的是使用带参数 --interactive 的 rebase 命令, 简写为 -i
+	git rebase -i HEAD~4
 
 
 
