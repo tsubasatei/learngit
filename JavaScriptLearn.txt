@@ -584,8 +584,38 @@ JavaScript全栈教程
 		buildDate({ year: 2017, month: 1, day: 1 });  // Sun Jan 01 2017 00:00:00 GMT+0800 (CST)
 		buildDate({ year: 2017, month: 1, day: 1, hour: 20, minute: 15 });  // Sun Jan 01 2017 20:15:00 GMT+0800 (CST)
 		
-	    
+	11） 方法： 绑定到对象上的函数称为方法。
+	     
+	        var xiaoming = {
+		    name: '小明',
+		    birth: 1990,
+		    age: function () {
+			var y = new Date().getFullYear();
+			return y - this.birth;
+		    }
+		};
+	     JavaScript的函数内部如果调用了this， this的指向：
+	     a) 以对象的方法形式调用，比如xiaoming.age()，该函数的this指向被调用的对象，也就是xiaoming。
+	     b) 单独调用函数，比如getAge()，此时，该函数的this指向全局对象，也就是window。
+	     在strict模式下，函数的this指向undefined。
+	     
+	        'use strict';
+		var xiaoming = {
+		    name: '小明',
+		    birth: 1990,
+		    age: function () {
+			var that = this; // 在方法内部一开始就捕获this
+			function getAgeFromBirth() {
+			    var y = new Date().getFullYear();
+			    return y - that.birth; // 用that而不是this
+			}
+			return getAgeFromBirth();
+		    }
+		};
+		xiaoming.age(); // 25
 		
+	    this指针只在age方法的函数内指向xiaoming，在函数内部定义的函数，this又指向undefined了！
+	    （在非strict模式下，它重新指向全局对象window！）
+	    用var that = this;，可以在方法内部定义其他函数，而不是把所有语句都堆到一个方法中。
 		
-		
-		
+	12） apply： 
