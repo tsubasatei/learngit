@@ -11,14 +11,21 @@ learn git
 	git config --global --unset user.name
 	git config --global --unset user.email
 
+        信息 保存位置：~/.gitconfig 文件
+	
     2)针对不同的项目, 在项目根目录下进行单独配置：--list查看当前配置, 在当前项目下面查看的配置是全局配置+当前项目的配置, 使用的时候会优先使用当前项目的配置
 	$ git config user.name "xiting"
 	$ git config user.email "337283708@qq.com"
 	$ git config --list
 	
-	
+	信息保存位置： ./.git/config 文件
 	
     3）这里设置的签名和登录远程库（代码托管中心）的账号、密码没有任何关系。
+    
+    4）级别优先级
+          就近原则：项目级别优先于系统用户级别，二者都有时采用项目级别的签名
+          如果只有系统用户级别的签名，就以系统用户级别的签名为准
+          二者都没有不允许
 	
 2. 创建仓库
 
@@ -26,11 +33,16 @@ learn git
 
 	2）添加文件到Git仓库，分两步：
 	第一步，使用命令git add <file>，注意，可反复多次使用，添加多个文件。实际上就是把文件修改添加到暂存区。
-	第二步，使用命令git commit -m "xxx" 完成提交更改。-m后面输入的是本次提交的说明，可以输入任意内容，当然最好是有意义的，这样你就能从历史记录里方便地找到改动记录。实际上就是把暂存区的所有内容提交到当前分支。
+	第二步，使用命令git commit -m "xxx" 完成提交更改。-m后面输入的是本次提交的说明，可以输入任意内容，当然最好是有意义的，这样你就能从历史记录里方便地找到改动记录。实际上就是把暂存区的所有内容提交到当前分支（本地库的）。
 	
-	3）要随时掌握工作区的状态，使用git status命令。
+	3）查看工作区、暂存区状态，使用git status命令。
 
 	4）如果git status告诉你有文件被修改过，用git diff可以查看修改内容。
+	    git diff [文件名]
+		 将工作区中的文件和暂存区进行比较
+	    git diff [本地库中历史版本] [文件名]
+                 将工作区中的文件和本地库历史记录比较
+            不带文件名比较多个文件
 	
 	
 3. 版本回退
@@ -39,10 +51,30 @@ learn git
 	因此，Git允许我们在版本的历史之间穿梭，使用命令git reset --hard commit_id。commit_id版本号没必要写全，前几位就可以了。
 	分离HEAD：git checkout C1
 
-	2）穿梭前，用git log可以查看提交历史，以便确定要回退到哪个版本。嫌输出信息太多使用git log --pretty=oneline
+	 基于索引值操作[推荐]
+             git reset --hard [局部索引值]
+             git reset --hard a6ace91
+         使用^符号：只能后退
+             git reset --hard HEAD^  注：一个^表示后退一步，n 个表示后退 n 步
+         使用~符号：只能后退
+             git reset --hard HEAD~n
+             注：表示后退 n 步
+	
+	 reset 命令的三个参数对比：
+	  --soft 参数 ： 仅仅在本地库
+	  --mixed 参数：在本地库移动， 重置暂存区
+	  --hard 参数：在本地库移动， 重置暂存区， 重置工作区
+	 
+	2）穿梭前，用git log可以查看提交历史，以便确定要回退到哪个版本。
+	嫌输出信息太多使用 git log --pretty=oneline 、  git log --oneline
 	如：$ git reset --hard HEAD^  回退到上一版本
+	多屏显示控制方式：
+		空格向下翻页
+		b 向上翻页
+		q 退出
 
 	3）要重返未来，用git reflog查看命令历史，以便确定要回到未来的哪个版本。
+	   HEAD@{移动到当前版本需要多少步}
 
 	
 4. 工作区和暂存区
@@ -84,6 +116,11 @@ learn git
 	
 	2）git checkout其实是用版本库里的版本替换工作区的版本，无论工作区是修改还是删除，都可以“一键还原”。
 	
+	3）前提：删除前，文件存在时的状态提交到了本地库。
+            操作：git reset --hard [指针位置]
+                  删除操作已经提交到本地库：指针位置指向历史记录
+                  删除操作尚未提交到本地库：指针位置使用 HEAD
+	
 
 8. 远程仓库
 
@@ -120,13 +157,35 @@ learn git
 	ssh -T git@github.com          #测试github
 	ssh -T git@gitool.glanway.com   #测试gitlab
 	
-	
+	SSH 登录
+		 进入当前用户的家目录： $ cd ~ 
+		 删除.ssh 目录： $ rm -rvf .ssh
+		 运行命令生成.ssh 密钥目录
+			$ ssh-keygen -t rsa -C atguigu2018ybuq@aliyun.com
+			[注意：这里-C 这个参数是大写的 C]
+		 进入.ssh 目录查看文件列表
+			$ cd .ssh
+			$ ls -lF
+		 查看 id_rsa.pub 文件内容：$ cat id_rsa.pub
+		 复制 id_rsa.pub 文件内容，登录 GitHub，点击用户头像→Settings→SSH and GPG keys
+		 New SSH Key
+		 输入复制的密钥信息
+		 回到 Git bash 创建远程地址别名
+			git remote add origin_ssh git@github.com:atguigu2018ybuq/huashan.git
+		 推送文件进行测试
+
+
 9. 添加远程库
 
 	要关联一个远程库，使用命令git remote add origin git@server-name:path/repo-name.git；
 	可以通过如下命令进行代码合并【注：pull=fetch+merge】：git pull --rebase origin master
 	关联后，使用命令git push -u origin master第一次推送master分支的所有内容；
 	此后，每次本地提交后，只要有必要，就可以使用命令git push origin master推送最新修改；
+	
+	    pull=fetch+merge
+		 git fetch [远程库地址别名] [远程分支名]
+		 git merge [远程库地址别名/远程分支名]
+		 git pull [远程库地址别名] [远程分支名]
 
 	分布式版本系统的最大好处之一是在本地工作完全不需要考虑远程库的存在，也就是有没有联网都可以正常工作，而SVN在没有联网的时候是拒绝干活的！当有网络的时候，再把本地提交推送一下就完成了同步，真是太方便了！
 	
@@ -152,6 +211,8 @@ learn git
 	创建+切换分支：git checkout -b <name>
 
 	合并某分支到当前分支：git merge <name>
+	    第一步：切换到接受修改的分支（被合并，增加新内容）上 git checkout [被合并分支名]
+            第二步：执行 merge 命令： git merge [有新内容分支名]
 
 	删除分支：git branch -d <name>
 	
@@ -161,7 +222,13 @@ learn git
 	当Git无法自动合并分支时，就必须首先解决冲突。解决冲突后，再提交，合并完成。
 	用git log --graph命令可以看到分支合并图。如：git log --graph --pretty=oneline --abbrev-commit
 	
-	
+	 冲突的解决：
+		 第一步：编辑文件，删除特殊符号
+		 第二步：把文件修改到满意的程度，保存退出
+		 第三步：git add [文件名]
+		 第四步：git commit -m "日志信息" 
+			 注意：此时 commit 一定不能带具体文件名
+			
 13. 分支管理策略
 
 	1）分支策略：
@@ -327,8 +394,8 @@ learn git
 23. 配置别名
 
 	--global参数是全局参数，也就是这些命令在这台电脑的所有Git仓库下都有用。	
-	git st就表示git status，co表示checkout，ci表示commit，br表示branch， 
-	unstage表示unstage， git last，让其显示最后一次提交信息：log -1
+	git st 就表示git status，co 表示checkout，ci 表示commit，br表示branch， 
+	unstage 表示unstage， git last，让其显示最后一次提交信息：log -1
 	
 	$ git config --global alias.st status 
 	$ git config --global alias.co checkout
@@ -343,7 +410,7 @@ learn git
 
 
 24. 搭建Git服务器
-
+	
 	搭建Git服务器需要准备一台运行Linux的机器，强烈推荐用Ubuntu或Debian。
 	
 	第一步，安装git：$ sudo apt-get install git
@@ -379,11 +446,35 @@ learn git
 
 29. 交互式 rebase 指的是使用带参数 --interactive 的 rebase 命令, 简写为 -i
 	git rebase -i HEAD~4
+	
+30. Gitlab 服务器搭建过程
+    1）官网地址：
+	    首页：https://about.gitlab.com/
+	    安装说明：https://about.gitlab.com/installation/
+	    
+    2）调整后的安装过程
+	sudo rpm -ivh /opt/gitlab-ce-10.8.2-ce.0.el7.x86_64.rpm
+	sudo yum install -y curl policycoreutils-python openssh-server cronie
+	sudo lokkit -s http -s ssh
+	sudo yum install postfix
+	sudo service postfix start
+	sudo chkconfig postfix on
+	curl https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.rpm.sh | sudo bash
+	sudo EXTERNAL_URL="http://gitlab.example.com" yum -y install gitlab-ce
+	    
+    3）gitlab 服务操作
+	 初始化配置 gitlab
+		gitlab-ctl reconfigure
+	 启动 gitlab 服务
+		gitlab-ctl start
+	 停止 gitlab 服务
+		gitlab-ctl stop    
+    4）浏览器访问
+	访问 Linux 服务器 IP 地址即可，如果想访问 EXTERNAL_URL 指定的域名还需要配置域名服务器或本地 hosts 文件。
+	初次登录时需要为 gitlab 的 root 用户设置密码。
 
-
-
-
-
+        ※应该会需要停止防火墙服务：service firewalld stop
+    
 
 	
 	
