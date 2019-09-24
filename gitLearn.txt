@@ -157,6 +157,8 @@ learn git
 	ssh -T git@github.com          #测试github
 	ssh -T git@gitool.glanway.com   #测试gitlab
 	
+	Hi tsubasatei! You've successfully authenticated, but GitHub does not provide shell access.
+	
 	SSH 登录
 		 进入当前用户的家目录： $ cd ~ 
 		 删除.ssh 目录： $ rm -rvf .ssh
